@@ -165,7 +165,7 @@ to the left side of Q ∨ R, leaving us with Q. We can derive Q through the elim
 to the right side of P ∧ Q. Now we have one goal left. First we can isolate p through the elimination rule
 for and to the left side of P ∧ R. Then we can apply the introduction rule for or to the right side
 of Q ∨ R, leaving us with R, which we can derive from using the elimination rule for and and applying it
-to the right side of P ∧ R. This allows us to apply the introduction rule for and to P and R. 
+to the right side of P ∧ R. This allows us to apply the introduction rule for and to P and R. QED.
 -/
 
 example : ∀ (P Q R : Prop), P ∨ (Q ∧ R) ↔ (P ∨ Q) ∧ (P ∨ R) := 
@@ -203,6 +203,15 @@ begin
       apply or.intro_left,
       exact P,
 end
+/- 
+First we must assume P and Q. Then, we will use the introduction rule for if and only if
+to create a forwards and backwards pathway. These wil be P ∧ (P ∨ Q) implies P, and P implies 
+P ∧ (P ∨ Q). AFter creating these pathways we will assume P ∧ (P ∨ Q). Then to complete this goal
+we need to use the elimination rule for and apply it to the left where we can isolate P. Now for 
+the other pathway we assume P. Then we can apply the introduction rule for and, where we add P
+to the left side of the ∧. To create the right side of P ∧ (P ∨ Q), we use the introduction rule
+for or and apply it to the left, leaving us with P, which we have. QED.
+-/
 
 example : ∀ (P Q : Prop), P ∨ (P ∧ Q) ↔ P := 
 begin
@@ -218,6 +227,15 @@ begin
     apply or.intro_left,
     exact P,
 end
+/- 
+First we must assume P and Q. Then we can apply the introduction rule for if and only if, leaving
+us with 2 pathways: P ∨ (P ∧ Q) → P and P → P ∨ (P ∧ Q). For the fowards pathway, we will assume 
+P ∨ (P ∧ Q). Then we can apply the or elimination rule to this, leaving us with 3 goals now. For the first
+of the goals, we need to show that P → P, which we have. Then we assume P ∧ Q for the next goal, leaving us
+with a goal of P. To isolate P, we use the and elimination rule and apply it to the left of P ∧ Q. 
+Lastlyk for our backwards route we assume P. Then we apply the or introduction rule to the left
+of P ∨ (P ∧ Q), leaving us with P. We have already assumed P. QED. 
+-/
 
 example : ∀ (P : Prop), P ∨ true ↔ true := 
 begin
