@@ -1,5 +1,11 @@
 /-
-Prove the following simple logical conjectures.
+Group: Earth, Wind, and Fire
+Jumi Hall, jah5py@virginia.edu, https://github.com/hubdaha/cs2120f21.git
+Connor McCaffrey, cam7qp@virginia.edu, https://github.com/camccaffrey/cs2120.git
+Jakob Kauffmann, jgk2qq@virginia.edu, https://github.com/jakekauff/CS2120F21.git
+-/
+/-
+Prove the following simple logical conjectures.-mm
 Give a formal and an English proof of each one.
 Your English language proofs should be complete
 in the sense that they identify all the axioms
@@ -183,14 +189,44 @@ begin
       assume qr,
         apply and.intro _ _,
           apply or.intro_right,
-          exact and.elim_left qr,
+            apply and.elim_left qr,
           apply or.intro_right,
           exact and.elim_right qr,
       assume pqpr,
-      apply or.intro_left,
-      cases pqpr,
+      have porq : P ∨ Q := and.elim_left pqpr,
+      have porr : P ∨ R := and.elim_right pqpr,
+      apply or.elim porq,
+        assume P,
+          apply or.intro_left,
+          exact P,
       
+        assume q,
+        apply or.elim porr,
+          assume P,
+            apply or.intro_left,
+            exact P,
+          assume r,
+          have qr : Q ∧ R := and.intro q r,
+          apply or.intro_right,
+          exact qr,
 end
+/- 
+First we must assume P Q and R. Then we can apply the introduction rule for if and only if, giving us two routes,
+where P ∨ (Q ∧ R) → (P ∨ Q) ∧ (P ∨ R) and (P ∨ Q) ∧ (P ∨ R) → P ∨ (Q ∧ R). For the first route, we msut assume 
+P ∨ (Q ∧ R). Then we can apply the or elimination rule to P ∨ (Q ∧ R), dividing this or statement into two 
+routes. For this first new "or" route, we can assume P and then apply the and introduction rule for the 
+two statements we will get later. To do so we will apply the or introduction rule to the left of 
+P ∨ R, leaving us to prove P, which we have already assumed. Then we can apply the or introduction rule to the left
+and apply P again, which we already have to get the other or statement. Now we must assume Q ∧ R. We will do the same thing 
+of applying the and introduction rule before completing the two or statements. To get these or statements
+we will apply the or introduction rule to the right, and then apply the and elimination rule to the left of Q ∧ R to
+isolate Q. Now for the other pathway we must assume (P ∨ Q) ∧ (P ∨ R). Then we can isolate the or statements using the 
+elimination rule for and on both sides. Then we can apply the or elimination rule to P ∨ Q. We can assume P, and then apply the 
+or introduction rule to the left of P ∨ Q ∧ R, This allows us to find P. Then, we can assume Q and apply
+the or elimination rule to P ∨ R. We can assume P, apply the or introduction rule to the left side,
+and find P. Fianlly, we will assume R, and isolate Q ∧ R by combing q and r through the introduction rule for add.
+QED.
+-/
 
 example : ∀ (P Q : Prop), P ∧ (P ∨ Q) ↔ P := 
 begin
@@ -247,6 +283,13 @@ begin
     apply or.intro_right,
     apply true.intro,
 end
+/- 
+First we assume P. Then we apply the introduction rule for if and only if, giving us two pathways
+that consist of P ∨ true → true and true → P ∨ true. For the first pathway we assume P ∨ true. Then
+we apply the introduction rule for true for true. Then for the other pathway we must assume true, and 
+then apply the or introduction rule to the right of P ∨ true, leaving us with a goal of proving true. We 
+can do this by again using the true introduction rule. QED.
+-/
 
 example : ∀ (P : Prop), P ∨ false ↔ P := 
 begin
@@ -262,6 +305,14 @@ begin
     apply or.intro_left,
     exact P,
 end
+/- 
+First we must assume P. Then we can apply the introduction rule for if and only if, giving us two
+pathways, where P ∨ false → P and P → P ∨ false. With this first pathway we assume P ∨ false. Then we 
+can apply the or elimination rule on P ∨ false, leaving us to prove that P → P. We can do this by assuming P. 
+Now we must prove that we an derive P from false, which we do by first assuming false, and then performing
+case analyses on false. Then for the second pathway we assume P, and then apply the introduction rule for
+or to the left of P ∨ false, leaving us to prove P, which we have already assumed. QED.
+-/
 
 example : ∀ (P : Prop), P ∧ true ↔ P := 
 begin
@@ -272,6 +323,13 @@ begin
     assume P,
     apply and.intro P true.intro,
 end
+/- 
+First we must assume an arbitrary P. Then we use the if and only if introduction rule to give us two 
+pathways. These pathways are P ∧ true → P and P → P ∧ true. Going down the first pathway we must assume
+P ∧ true. Then we can prove P by using the and elimination rule on the left side of P ∧ true. Now for
+the other pathway we must assume P. Then we can apply the introduction rule for and to P and true. We may derive 
+true by using the introduction rule for true. QED.
+-/
 
 example : ∀ (P : Prop), P ∧ false ↔ false := 
 begin
@@ -283,5 +341,12 @@ begin
     apply and.intro _ f,
     cases f,
 end
+/- 
+First we must assume P. Then we can apply the introduction rule for if and only if to get two pathways, where
+P ∧ false → false, and false → P ∧ false. For the first pathway we must assume P ∧ false. Then, to prove "false" we 
+can use the and elimination rule and apply it to the right side of P ∧ false. For the other pathway, 
+we must assume false. Then we can use case analysis for false to get P, and apply the and introduction rule
+to P and false. QED.
+-/
 
 
