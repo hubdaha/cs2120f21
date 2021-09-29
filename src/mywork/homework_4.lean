@@ -66,9 +66,26 @@ begin
   assume P Q,
   apply iff.intro _ _,
     assume notpq,
-    by_cases p : P,
-    
-    
+      have pornp : P ∨ ¬P := classical.em P,
+      have qornq : Q ∨ ¬Q := classical.em Q,
+      cases pornp,
+      cases qornq,
+      have pq : P ∧ Q := and.intro pornp qornq,
+      have f : false := notpq pq,
+      exact false.elim f,
+      apply or.intro_right,
+      exact qornq,
+      apply or.intro_left,
+      exact pornp,
+    assume npornq,
+      apply not.intro,
+      cases npornq,
+      assume pq,
+      have p : P := and.elim_left pq,
+      apply npornq p,
+      assume pq,
+      have q : Q := and.elim_right pq,
+      apply npornq q,  
 end
 
 
@@ -78,11 +95,14 @@ begin
   assume P Q,
   assume notpq,
   have pornp := classical.em P,
-  apply or.elim pornp,
-  assume P,
-
-
-
+  have qornq := classical.em Q,
+  cases pornp with p np,
+  have f : false := notpq (or.intro_left _ p),
+  exact false.elim f,
+  cases qornq with q nq,
+  have f : false := notpq (or.intro_right _ q),
+  exact false.elim f,
+  exact and.intro np nq,
 end
 
 
@@ -206,6 +226,6 @@ begin
   assume P Q,
   assume npimpnq,
   assume q,
-  
+
 end
 
