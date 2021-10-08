@@ -1,5 +1,9 @@
--- Jumi Hall
--- group: Earth, Wind, and Fire
+/-
+Group: Earth, Wind, and Fire
+Jumi Hall, jah5py@virginia.edu, https://github.com/hubdaha/cs2120f21.git
+Connor McCaffrey, cam7qp@virginia.edu, https://github.com/camccaffrey/cs2120.git
+Jakob Kauffmann, jgk2qq@virginia.edu, https://github.com/jakekauff/CS2120F21.git
+-/
 
 -- 1
 example : 0 ≠ 1 :=
@@ -181,6 +185,52 @@ theorem distrib_and_or_foil :
   (P ∨ Q) ∧ (R ∨ S) ↔
   (P ∧ R) ∨ (P ∧ S) ∨ (Q ∧ R) ∨ (Q ∧ S) :=
 begin
+  assume P Q R S,
+  apply iff.intro _ _,
+  assume poqaros,
+  have porq: P ∨ Q := and.elim_left poqaros,
+  have rors: R ∨ S := and.elim_right poqaros,
+    cases porq with p q,
+    cases rors with r s,
+    have pr : P ∧ R := and.intro p r,
+    apply or.intro_left,
+    exact pr,
+    have ps : P ∧ S := and.intro p s,
+    apply or.intro_right _ _,
+    apply or.intro_left _ ps,
+    cases rors with r s,
+    have qr: Q ∧ R := and.intro q r,
+    apply or.intro_right _ _,
+    apply or.intro_right _ _,
+    apply or.intro_left _ qr,
+    have qs: Q ∧ S := and.intro q s,
+    apply or.intro_right _ _,
+    apply or.intro_right _ _,
+    apply or.intro_right _ qs,
+      assume prpsqrqs,
+      cases prpsqrqs with pr psqrqs,
+      have p: P := and.elim_left pr,
+      have r: R := and.elim_right pr,
+      have porq: P ∨ Q := or.intro_left _ p,
+      have rors: R ∨ S := or.intro_left _ r,
+      exact and.intro porq rors,
+        cases psqrqs with ps qrqs,
+        have p: P := and.elim_left ps,
+        have s: S := and.elim_right ps,
+        have porq: P ∨ Q := or.intro_left _ p,
+        have rors: R ∨ S := or.intro_right _ s,
+        exact and.intro porq rors,
+          cases qrqs with qr qs,
+          have q: Q := and.elim_left qr,
+          have r: R := and.elim_right qr,
+          have porq: P ∨ Q := or.intro_right _ q,
+          have rors: R ∨ S := or.intro_left _ r,
+          exact and.intro porq rors,
+            have q: Q := and.elim_left qs,
+            have s: S := and.elim_right qs,
+            have porq: P ∨ Q := or.intro_right _ q,
+            have rors: R ∨ S := or.intro_right _ s,
+            exact and.intro porq rors,
 end
 
 
@@ -200,14 +250,17 @@ begin
   assume P Q,
   apply iff.intro _ _,
     assume pq,
-    cases classical.em P,
+    cases classical.em P with p np,
+    have q: Q := pq p,
     apply or.intro_right,
-    apply pq h,
-    apply or.intro_left,
-    exact h,
-    assume nporq,
-    cases classical.em P,
-    assume P,
+    exact q,
+      exact or.intro_left _ np,
+      assume nporq,
+      assume p,
+      cases nporq with np q,
+      have f: false := np p,
+      exact false.elim f,
+      exact q,
 end
 
 -- 12
@@ -216,8 +269,10 @@ begin
   assume P Q,
   assume pimpq,
   assume notq,
-  cases classical.em P,
-  
+  apply not.intro,
+  assume p,
+  have q: Q := pimpq p,
+  contradiction, 
 end
 
 -- 13
@@ -226,6 +281,9 @@ begin
   assume P Q,
   assume npimpnq,
   assume q,
-
+  cases classical.em P with p np,
+  exact p,
+    have nq: ¬Q := npimpnq np,
+    contradiction,
 end
 

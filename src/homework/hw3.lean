@@ -6,7 +6,7 @@ in the sense that they identify all the axioms
 and/or theorems that you use.
 -/
 
-example : true := _
+example : true := true.intro
 
 example : false := _    -- trick question? why?
 

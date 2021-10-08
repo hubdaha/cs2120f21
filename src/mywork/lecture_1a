@@ -276,11 +276,8 @@ the proposition, 2 = 2. (See above for a good
 example to follow!)
 -/
 
---  (T : Type)      
-    (2 : T)         
-    : 2 = 2          
-    := eq.refl 2
-
+-- 
+example : 2 = 2 := @eq.refl ℕ 2
 
 /-
 EXERCISE #3.
@@ -311,3 +308,4 @@ that "it's raining *and* the streets are wet."
 answer: deductive
 -/
 end cs2120
+
