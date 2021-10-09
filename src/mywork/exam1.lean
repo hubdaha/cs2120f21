@@ -297,13 +297,15 @@ that iff has both elim_left and elim_right
 rules, just like ∧.
 -/
 
-example : ∀ (A B : Prop), (A ↔ B) → ((A → B) ∧ (B → A)) :=
+example : ∀ (A B : Prop), (A ↔ B) → ((A → B) → (B → A)) :=
 begin
   assume A B,
   assume aiffb,
   have ab : A → B := iff.elim_left aiffb,
   have ba : B → A := iff.elim_right aiffb,
-  exact and.intro ab ba,
+  assume ab,
+  assume b,
+  apply ba b,
 end
 
 
@@ -414,7 +416,19 @@ both directions.
 -/
 
 def negelim_equiv_exmid : Prop := 
-  classical.em P → 
+  ∀ (A : Prop), ¬A ∨ A ↔ ¬A
+
+example : negelim_equiv_exmid :=
+begin
+  unfold negelim_equiv_exmid,
+  intros,
+  apply iff.intro _ _,
+  assume notaora,
+  cases notaora,
+  exact notaora,
+  
+end
+
 
 
 /- 
@@ -426,4 +440,9 @@ there is someone who loves everyone. [5 points]
 
 axiom Loves : Person → Person → Prop
 
-example : ∀ (p : Person) Loves p q, Loves q p := _
+example : (∀ p q : Person, Loves p q ) → ∃ p q: Person, Loves q p :=
+begin
+  assume personeveryoneloves,
+  have f := classical.em (∃ (p : Person), ¬ Loves p q),
+end
+
