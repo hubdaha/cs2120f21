@@ -183,7 +183,14 @@ example :
   surjective r → 
   image_set r (dom r) = { b : β | true } :=
 begin
--- homework (on your own ungraded but please do it!)
+  unfold surjective,
+  unfold total_function,
+  unfold function,
+  unfold single_valued,
+  unfold defined,
+  intros,
+  unfold image_set,
+  
 end
 
 /-
@@ -328,7 +335,7 @@ correspondence between two sets. A function who inverse
 is a function is said to be invertible (as a function, as 
 every relation has and inverse that is again a relation). 
 -/
-
+------ HOMEWORK #8 STARTS HERE ---------------------------------
 /-
 EXERCISE #1: Prove that the inverse of a 
 bijective function is a function. Ok, yes, 
@@ -422,6 +429,52 @@ def bijectivep := function r ∧ bijective (dom_res r (dom_of_def r))
 -- EXERCISE #2: Prove that the inverse of a bijective function is bijective.
 example : bijective r → bijective (inverse r) :=
 begin
+assume bij_r,
+unfold bijective,
+unfold bijective at bij_r,
+cases bij_r with surj_r inj_r,
+unfold surjective at surj_r,
+unfold injective at inj_r,
+cases surj_r with r_tot r_onto,
+cases inj_r with r_tot r_one_to_one,
+cases r_tot with r_fun alldef,
+unfold function at r_fun,
+unfold single_valued at r_fun,
+
+apply and.intro _ _,
+
+unfold surjective,
+unfold total_function,
+split,
+split,
+unfold function,
+unfold single_valued,
+unfold inverse,
+assume b a x rab rxb,
+apply r_one_to_one rab,
+exact rxb,
+
+assume b,
+apply r_onto b,
+unfold inverse,
+unfold defined at alldef,
+exact alldef,
+
+unfold injective inverse,
+split,
+unfold total_function,
+split,
+unfold function,
+unfold single_valued,
+assume b a x rab rxb,
+apply r_one_to_one rab rxb,
+
+assume b,
+unfold defined at alldef,
+apply r_onto b,
+
+assume b x a rab rax,
+apply r_fun rab rax,
 end
 
 
@@ -431,6 +484,8 @@ function is that function.
 -/
 example : bijective r → (r = inverse (inverse r)) :=
 begin
+  assume bij_r,
+  unfold inverse,
 end
 
 /-
@@ -438,7 +493,16 @@ EXERCISE  #4: Formally state and prove that every injective function
 has a *function* as an inverse.
 -/
 example : injective r → function (inverse r) :=
-  _ -- hint: remember recent work
+begin
+  assume inj_r,
+  unfold function,
+  unfold single_valued,
+  assume b a x rba_inv rbx_inv,
+  unfold injective at inj_r,
+  cases inj_r with r_tot inj_r,
+  unfold inverse at rba_inv rbx_inv,
+  apply inj_r rba_inv rbx_inv,
+end
 
 
 /-
