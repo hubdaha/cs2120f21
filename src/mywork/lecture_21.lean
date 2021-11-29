@@ -319,3 +319,21 @@ inductive tc {α : Type} (r : α → α → Prop) : α → α → Prop
 end relation
 
 end hidden
+
+-- hw 7:
+def cong_mod (n a b : ℤ) : Prop :=
+  ∃ k, a - b = k * n
+
+-- def of congruence mod n, definied over all integers. 
+
+def cong_mod_n_is_equiv_relation (n : ℤ) : Prop :=
+  equivalence (cong_mod n)
+
+#reduce cong_mod (4:ℤ)
+
+example : cong_mod (4:ℤ) (6:ℤ) (14:ℤ) :=
+begin
+  unfold cong_mod,
+  apply exists.intro (-2:ℤ),
+  exact rfl,
+end

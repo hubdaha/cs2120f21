@@ -737,4 +737,14 @@ a combining of these solutions with an argument value
 to produce answer for that argument value. 
 -/
 
+∀ (P: bool → Prop),
+  P tt → 
+  P ff → 
+  ∀ (b: bool), P b
+∀ (n: nat), P n,
+  P 0
+  ∀ n', P n' → P (n' + 1)
+  ∀ n, P n
+
+
 #reduce sum_up_to 5
