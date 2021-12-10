@@ -210,3 +210,20 @@ the definitions we give in this file.
 -/
 #check @and.comm
 #check @and.assoc
+
+def power : ℕ → ℕ → ℕ
+| m 0 := nat.zero.succ
+| m (nat.succ(n')) := m * (power m n')
+ 
+def pow2 := power 2 -- turns it into a one argument function
+ 
+def s : ℕ → ℕ
+| nat.zero := (nat.zero).succ
+| (nat.succ(n')) := s n' + pow2 (n'.succ)
+ 
+#eval pow2 3
+#eval pow2 4
+#reduce s 4
+ 
+def Pn : ℕ → Prop :=
+ λ n, s n = (pow2 (n.succ) - 1)

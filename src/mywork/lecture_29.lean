@@ -60,7 +60,11 @@ def sum_to : nat → nat
 
 
 def exp : nat → nat → nat 
-| 
+| (nat.zero)(m) := nat.succ(nat.zero)
+| (nat.succ n') (m) := mul (m) (mul n' m)
+#reduce exp 5 2
+
+
 end hidden
 
 def P : nat → Prop
